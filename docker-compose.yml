@@ -17,6 +17,12 @@ volumes:
     pgslave4:
     backup:
 
+configs:
+    ssh_id_rsa:
+        file: ./ssh/id_rsa
+    ssh_id_rsa_pub:
+        file: ./ssh/id_rsa.pub
+
 services:
     pgmaster:
         image: registry.orus.io/postgres-10-repmgr-4.0:latest
@@ -49,7 +55,11 @@ services:
             - 5422:5432
         volumes:
             - pgmaster:/var/lib/postgresql/data
-            - ./ssh/:/home/postgres/.ssh/keys
+        configs:
+              - source: ssh_id_rsa
+                target: /home/postgres/.ssh/keys/id_rsa
+              - source: ssh_id_rsa_pub
+                target: /home/postgres/.ssh/keys/id_rsa.pub
         networks:
             cluster:
                 aliases:
@@ -71,7 +81,11 @@ services:
             - 5441:5432
         volumes:
             - pgslave1:/var/lib/postgresql/data
-            - ./ssh:/home/postgres/.ssh/keys
+        configs:
+              - source: ssh_id_rsa
+                target: /home/postgres/.ssh/keys/id_rsa
+              - source: ssh_id_rsa_pub
+                target: /home/postgres/.ssh/keys/id_rsa.pub
         networks:
             cluster:
                 aliases:
@@ -154,7 +168,11 @@ services:
             BACKUP_SCHEDULE: "*/30 */5 * * *"
         volumes:
             - backup:/var/backups
-            - ./ssh:/home/postgres/.ssh/keys
+        configs:
+              - source: ssh_id_rsa
+                target: /home/postgres/.ssh/keys/id_rsa
+              - source: ssh_id_rsa_pub
+                target: /home/postgres/.ssh/keys/id_rsa.pub
         networks:
             cluster:
                 aliases:
@@ -185,8 +203,11 @@ services:
         ports:
             - 5430:5432
             - 9898:9898 # PCP
-        volumes:
-            - ./ssh:/home/postgres/.ssh/keys
+        configs:
+              - source: ssh_id_rsa
+                target: /home/postgres/.ssh/keys/id_rsa
+              - source: ssh_id_rsa_pub
+                target: /home/postgres/.ssh/keys/id_rsa.pub
         networks:
             cluster:
                 aliases:
