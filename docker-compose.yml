@@ -32,8 +32,8 @@ services:
             SSH_ENABLE: 0
             #database we want to use for application
             POSTGRES_PASSWORD: monkey_pass
-            POSTGRES_USER: monkey_user
-            POSTGRES_DB: monkey_db
+            POSTGRES_USER: postgres
+            POSTGRES_DB: postgres
             CLEAN_OVER_REWIND: 0
             CONFIGS_DELIMITER_SYMBOL: ;
             CONFIGS: "listen_addresses:'*';max_replication_slots:5"
@@ -135,8 +135,8 @@ services:
             REPLICATION_PASSWORD: replication_pass # default is replication_pass
             REPLICATION_HOST: pgmaster
             POSTGRES_PASSWORD: monkey_pass
-            POSTGRES_USER: monkey_user
-            POSTGRES_DB: monkey_db
+            POSTGRES_USER: postgres
+            POSTGRES_DB: postgres
             SSH_ENABLE: 0
             BACKUP_SCHEDULE: "*/30 */5 * * *"
         volumes:
