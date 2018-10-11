@@ -152,11 +152,11 @@ services:
             PCP_PASSWORD: pcp_pass
             WAIT_BACKEND_TIMEOUT: 60
 
-            CHECK_USER: monkey_user
+            CHECK_USER: postgres
             CHECK_PASSWORD: monkey_pass
             CHECK_PGCONNECT_TIMEOUT: 3 #timout for checking if primary node is healthy
             SSH_ENABLE: 0
-            DB_USERS: monkey_user:monkey_pass # in format user:password[,user:password[...]]
+            DB_USERS: postgres:monkey_pass # in format user:password[,user:password[...]]
             BACKENDS: "0:pgmaster:5432:1:/var/lib/postgresql/data:ALLOW_TO_FAILOVER,1:pgslave1::::,3:pgslave3::::,2:pgslave2::::" #,4:pgslaveDOES_NOT_EXIST::::
                       # in format num:host:port:weight:data_directory:flag[,...]
                       # defaults:
