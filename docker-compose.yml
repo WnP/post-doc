@@ -7,7 +7,7 @@
 version: '3.3'
 networks:
     cluster:
-        driver: bridge
+        driver: overlay
 
 volumes:
     pgmaster:
