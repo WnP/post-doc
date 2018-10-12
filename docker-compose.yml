@@ -5,10 +5,10 @@
 ##########################################################################
 
 version: '3.3'
+
 networks:
-    pgsql_9-6_cluster:
-        driver: overlay
-        attachable: true
+    pgsql_ha_9-6:
+        external: true
 
 volumes:
     pgmaster:
@@ -55,7 +55,7 @@ services:
               - source: postgresql_conf
                 target: /var/cluster_configs/postgresql.conf
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgmaster
 #<<< Branch 1
@@ -77,7 +77,7 @@ services:
               - source: postgresql_conf
                 target: /var/cluster_configs/postgresql.conf
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgslave1
 
@@ -99,7 +99,7 @@ services:
               - source: postgresql_conf
                 target: /var/cluster_configs/postgresql.conf
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgslave2
 #>>> Branch 1
@@ -123,7 +123,7 @@ services:
               - source: postgresql_conf
                 target: /var/cluster_configs/postgresql.conf
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgslave3
 
@@ -144,7 +144,7 @@ services:
               - source: postgresql_conf
                 target: /var/cluster_configs/postgresql.conf
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgslave4
 #>>> Branch 2
@@ -162,7 +162,7 @@ services:
         volumes:
             - backup:/var/backups
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - backup
     pgpool:
@@ -189,6 +189,6 @@ services:
                       # in format variable1:value1[,variable2:value2[,...]] if CONFIGS_DELIMITER_SYMBOL=, and CONFIGS_ASSIGNMENT_SYMBOL=:
                       # used for pgpool.conf file
         networks:
-            pgsql_9-6_cluster:
+            pgsql_ha_9-6:
                 aliases:
                     - pgpool
