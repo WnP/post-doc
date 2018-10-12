@@ -17,6 +17,10 @@ volumes:
     pgslave4:
     backup:
 
+configs:
+    postgresql_conf:
+        file: ./postgresql.conf
+
 services:
     pgmaster:
         image: registry.orus.io/postgres-10-repmgr-4.0:latest
@@ -46,6 +50,9 @@ services:
             REPLICATION_PASSWORD: replication_pass # default is replication_pass
         volumes:
             - pgmaster:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -65,6 +72,9 @@ services:
             CONFIGS: "max_replication_slots:10" #some overrides
         volumes:
             - pgslave1:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -84,6 +94,9 @@ services:
             CONFIGS: "listen_addresses:'*'"
         volumes:
             - pgslave2:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -105,6 +118,9 @@ services:
             CONFIGS: "listen_addresses:'*'"
         volumes:
             - pgslave3:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -123,6 +139,9 @@ services:
             CONFIGS: "listen_addresses:'*'"
         volumes:
             - pgslave4:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
