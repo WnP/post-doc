@@ -17,6 +17,10 @@ volumes:
     pgslave4:
     backup:
 
+configs:
+    postgresql_conf:
+        file: ./postgresql.conf
+
 services:
     pgmaster:
         image: registry.orus.io/postgres-9.6-repmgr-4.0:latest
@@ -24,10 +28,10 @@ services:
             NODE_ID: 1 # Integer number of node (not required if can be extracted from NODE_NAME var, e.g. node-45 => 1045)
             NODE_NAME: node1 # Node name
             CLUSTER_NODE_NETWORK_NAME: pgmaster # (default: hostname of the node)
-            
+
             PARTNER_NODES: "pgmaster,pgslave1,pgslave3"
             REPLICATION_PRIMARY_HOST: pgmaster # That should be ignored on the same node
-            
+
             NODE_PRIORITY: 100  # (default: 100)
             SSH_ENABLE: 0
             #database we want to use for application
@@ -44,11 +48,14 @@ services:
             REPLICATION_DB: replication_db # default is replication_db
             REPLICATION_USER: replication_user # default is replication_user
             REPLICATION_PASSWORD: replication_pass # default is replication_pass
-            
+
         ports:
             - 5422:5432
         volumes:
             - pgmaster:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -70,6 +77,9 @@ services:
             - 5441:5432
         volumes:
             - pgslave1:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -91,6 +101,9 @@ services:
             - 5442:5432
         volumes:
             - pgslave2:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -114,6 +127,9 @@ services:
             - 5443:5432
         volumes:
             - pgslave3:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
@@ -134,6 +150,9 @@ services:
             - 5444:5432
         volumes:
             - pgslave4:/var/lib/postgresql/data
+        configs:
+              - source: postgresql_conf
+                target: /var/cluster_configs/postgresql.conf
         networks:
             cluster:
                 aliases:
